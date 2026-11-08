@@ -64,3 +64,17 @@ export function describeCounts(c: SnapshotCounts): string {
 export function describeSnapshot(s: Partial<Snapshot> | null | undefined): string {
   return describeCounts(snapshotCounts(s));
 }
+
+/** Shared copy first, then any record (by id) only this device has. */
+export function mergeSnapshots(base: Snapshot, extra: Snapshot): Snapshot {
+  const join = (a: unknown[], b: unknown[]) => {
+    const ids = new Set(a.map((r) => (r as { id?: string })?.id));
+    return [...a, ...b.filter((r) => !ids.has((r as { id?: string })?.id))];
+  };
+  return {
+    students: join(base.students, extra.students),
+    tutanaklar: join(base.tutanaklar, extra.tutanaklar),
+    attendance: join(base.attendance, extra.attendance),
+    takrirler: join(base.takrirler, extra.takrirler),
+  };
+}
