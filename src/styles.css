@@ -173,6 +173,8 @@
   html {
     scrollbar-gutter: stable both-edges;
     overflow-x: clip;
+    /* Page must stay at one size: no pinch-zoom, no double-tap zoom. */
+    touch-action: pan-x pan-y;
   }
 
   * {

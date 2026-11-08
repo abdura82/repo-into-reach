@@ -20,8 +20,10 @@ import { CloudSyncProvider } from "../lib/cloud-sync";
 // Background report sync is not needed for first paint; load it after the app is idle.
 const ReportAutoSync = lazy(() => import("../components/app/EmailReports").then((m) => ({ default: m.ReportAutoSync })));
 import { installChunkReloadHandler, isChunkLoadError, reloadForChunkError } from "../lib/chunk-reload";
+import { installNoZoom } from "../lib/no-zoom";
 
 installChunkReloadHandler();
+installNoZoom();
 
 function NotFoundComponent() {
   return (
@@ -88,7 +90,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" },
       { name: "theme-color", content: "#2f6b52" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "mobile-web-app-capable", content: "yes" },
