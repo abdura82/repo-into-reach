@@ -14,8 +14,6 @@ import { groupLabel } from "@/lib/groups";
 const EmailReports = lazy(() => import("@/components/app/EmailReports").then((m) => ({ default: m.EmailReports })));
 const ReportSheet = lazy(() => import("@/components/app/ReportSheet").then((m) => ({ default: m.ReportSheet })));
 const BlankAttendanceSheet = lazy(() => import("@/components/app/BlankAttendanceSheet").then((m) => ({ default: m.BlankAttendanceSheet })));
-const CloudBackup = lazy(() => import("@/components/app/CloudBackup").then((m) => ({ default: m.CloudBackup })));
-const CloudSummary = lazy(() => import("@/components/app/CloudBackup").then((m) => ({ default: m.CloudSummary })));
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
@@ -110,7 +108,6 @@ function Menu() {
         <Button variant="outline" onClick={() => setBlankOpen(true)} className="h-auto w-full justify-start whitespace-normal py-4"><FileDown className="text-primary" /> Boş Yoklama Çizelgesi İndir (PDF / Excel)</Button>
         <button onClick={() => setExportAsk(true)} className={btn}><Download className="h-5 w-5 text-primary" /> Verileri Yedekle (indir)</button>
         <button onClick={() => setImportAsk(true)} className={btn}><Upload className="h-5 w-5 text-primary" /> Yedeği Geri Yükle</button>
-        <Suspense fallback={null}><CloudBackup /></Suspense>
         <input ref={fileRef} type="file" accept="application/json" className="hidden" onChange={(e) => { importData(e.target.files?.[0]); e.target.value = ""; }} />
 
         <AlertDialog open={exportAsk} onOpenChange={setExportAsk}>
@@ -170,7 +167,6 @@ function Menu() {
           </AlertDialogContent>
         </AlertDialog>
         {msg && <p className="text-center text-sm text-primary">{msg}</p>}
-        <Suspense fallback={null}><CloudSummary /></Suspense>
       </div>
     </>
   );

@@ -1,8 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-/** One teacher's whole backup: the same four lists the phone keeps. */
+/** The one shared copy everyone sees: the same four lists the phone keeps. */
 const snapshotSchema = z.object({
   students: z.array(z.object({ id: z.string().max(100) }).passthrough()).max(2000),
   tutanaklar: z.array(z.object({ id: z.string().max(100) }).passthrough()).max(5000),
@@ -12,30 +11,26 @@ const snapshotSchema = z.object({
 
 export type CloudSnapshot = z.infer<typeof snapshotSchema>;
 
-/** Reads this signed-in teacher's backup. RLS scopes the row to auth.uid(). */
-export const loadCloudData = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("app_data")
-      .select("data, updated_at")
-      .eq("user_id", context.userId)
-      .maybeSingle();
-    if (error) throw new Error(error.message);
-    if (!data) return null;
-    // Handed over as text: the backup is free-form JSON, and a string always survives the trip back.
-    return { json: JSON.stringify(data.data ?? {}), updatedAt: data.updated_at as string };
-  });
+const ROW_ID = "main";
 
-/** Replaces this signed-in teacher's backup with what the phone holds. */
+/** Reads the shared data. Open to every visitor on purpose: the owner wants all devices to see the same data. */
+export const loadCloudData = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin.from("shared_data").select("data, updated_at").eq("id", ROW_ID).maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) return null;
+  return { json: JSON.stringify(data.data ?? {}), updatedAt: data.updated_at as string };
+});
+
+/** Replaces the shared data with what this device holds. */
 export const saveCloudData = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((input) => snapshotSchema.parse(input))
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const savedAt = new Date().toISOString();
-    const { error } = await context.supabase
-      .from("app_data")
-      .upsert({ user_id: context.userId, data: data as never, updated_at: savedAt }, { onConflict: "user_id" });
+    const { error } = await supabaseAdmin
+      .from("shared_data")
+      .upsert({ id: ROW_ID, data: data as never, updated_at: savedAt }, { onConflict: "id" });
     if (error) throw new Error(error.message);
     return { ok: true, savedAt };
   });
