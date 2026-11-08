@@ -1,0 +1,11 @@
+[
+  {"capability": "code", "source": "github:poiulevel-code/exact-style-transfer-27", "outcome": "migrate", "status": "verified", "next_action": "none"},
+  {"capability": "schema:report_subscriptions", "source": "drizzle/migrations 0000-0002", "outcome": "migrate", "status": "verified", "next_action": "none"},
+  {"capability": "records:report_subscriptions", "source": "old Lovable Cloud database", "outcome": "migrate", "status": "pending", "next_action": "Recreated automatically when the teacher saves report emails again in Menu; optional export from old project"},
+  {"capability": "records:browser-local data (students, attendance, tutanak)", "source": "browser localStorage on old app address", "outcome": "migrate", "status": "pending", "next_action": "Data lives on the user's device under the old app address; cannot be copied server-side"},
+  {"capability": "auth", "source": "none (no sign-in in source)", "outcome": "not-applicable", "status": "verified", "next_action": "none"},
+  {"capability": "ai-gateway", "source": "src/lib/ai-gateway.server.ts", "outcome": "preserve", "status": "implemented", "next_action": "Try AI Tutanak in preview"},
+  {"capability": "gmail", "source": "src/lib/gmail.server.ts", "outcome": "preserve", "status": "pending", "next_action": "User links Gmail connection"},
+  {"capability": "schedules", "source": "/api/public/jobs/send-reports", "outcome": "migrate", "status": "verified", "next_action": "none (daily 17:00 UTC, weekly Sunday, monthly last day)"},
+  {"capability": "fonts/assets", "source": "public/fonts", "outcome": "migrate", "status": "verified", "next_action": "none"}
+]
