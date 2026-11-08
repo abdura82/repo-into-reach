@@ -15,6 +15,13 @@
       "when": 1794151683440,
       "tag": "0001_create_app_data",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794152403265,
+      "tag": "0002_apply_imported",
+      "breakpoints": true
     }
   ]
 }
