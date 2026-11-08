@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { supabase } from "@/integrations/supabase/client";
 import { useStore, type State } from "./store";
 import { loadCloudData, saveCloudData } from "./cloud-data.functions";
 import { isEmptySnapshot, mergeSnapshots, sameSnapshot, toSnapshot, type Snapshot, type SnapshotInput } from "./cloud-data";
@@ -28,6 +29,8 @@ export function CloudSyncProvider({ children }: { children: ReactNode }) {
   const last = useRef<Snapshot | null>(null); // what the shared copy holds as far as we know
   const started = useRef(false);
   const pending = useRef(false);
+  const channel = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const ring = () => void channel.current?.send({ type: "broadcast", event: "changed", payload: {} });
 
   const apply = useCallback(
     (s: Snapshot) => {
@@ -82,23 +85,31 @@ export function CloudSyncProvider({ children }: { children: ReactNode }) {
       try {
         await save({ data: snapshot as never });
         last.current = snapshot;
+        ring();
       } catch (e) {
         console.warn("Paylaşılan veriler kaydedilemedi", e);
       } finally {
         pending.current = false;
       }
-    }, 1500);
+    }, 250);
     return () => clearTimeout(t);
   }, [snapshot, ready, save]);
 
   // Pick up other devices' changes.
   useEffect(() => {
     if (!ready) return;
-    const id = setInterval(() => void pull(), 20000);
+    const ch = supabase
+      .channel("shared-data")
+      .on("broadcast", { event: "changed" }, () => void pull())
+      .subscribe();
+    channel.current = ch;
+    const id = setInterval(() => void pull(), 5000);
     const onFocus = () => void pull();
     window.addEventListener("focus", onFocus);
     return () => {
       clearInterval(id);
+      channel.current = null;
+      void supabase.removeChannel(ch);
       window.removeEventListener("focus", onFocus);
     };
   }, [ready, pull]);
