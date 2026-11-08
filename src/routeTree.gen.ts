@@ -10,33 +10,129 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiTutanakRouteImport } from './routes/ai-tutanak'
+import { Route as KagitRouteImport } from './routes/kagit'
+import { Route as MenuRouteImport } from './routes/menu'
+import { Route as TakrirRouteImport } from './routes/takrir'
+import { Route as YoklamaRouteImport } from './routes/yoklama'
+import { Route as TalebeNameRouteImport } from './routes/talebe.$name'
+import { Route as ApiPublicJobsSendReportsRouteImport } from './routes/api/public/jobs/send-reports'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiTutanakRoute = AiTutanakRouteImport.update({
+  id: '/ai-tutanak',
+  path: '/ai-tutanak',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KagitRoute = KagitRouteImport.update({
+  id: '/kagit',
+  path: '/kagit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MenuRoute = MenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TakrirRoute = TakrirRouteImport.update({
+  id: '/takrir',
+  path: '/takrir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const YoklamaRoute = YoklamaRouteImport.update({
+  id: '/yoklama',
+  path: '/yoklama',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TalebeNameRoute = TalebeNameRouteImport.update({
+  id: '/talebe/$name',
+  path: '/talebe/$name',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicJobsSendReportsRoute =
+  ApiPublicJobsSendReportsRouteImport.update({
+    id: '/api/public/jobs/send-reports',
+    path: '/api/public/jobs/send-reports',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-tutanak': typeof AiTutanakRoute
+  '/kagit': typeof KagitRoute
+  '/menu': typeof MenuRoute
+  '/takrir': typeof TakrirRoute
+  '/yoklama': typeof YoklamaRoute
+  '/talebe/$name': typeof TalebeNameRoute
+  '/api/public/jobs/send-reports': typeof ApiPublicJobsSendReportsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-tutanak': typeof AiTutanakRoute
+  '/kagit': typeof KagitRoute
+  '/menu': typeof MenuRoute
+  '/takrir': typeof TakrirRoute
+  '/yoklama': typeof YoklamaRoute
+  '/talebe/$name': typeof TalebeNameRoute
+  '/api/public/jobs/send-reports': typeof ApiPublicJobsSendReportsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-tutanak': typeof AiTutanakRoute
+  '/kagit': typeof KagitRoute
+  '/menu': typeof MenuRoute
+  '/takrir': typeof TakrirRoute
+  '/yoklama': typeof YoklamaRoute
+  '/talebe/$name': typeof TalebeNameRoute
+  '/api/public/jobs/send-reports': typeof ApiPublicJobsSendReportsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ai-tutanak'
+    | '/kagit'
+    | '/menu'
+    | '/takrir'
+    | '/yoklama'
+    | '/talebe/$name'
+    | '/api/public/jobs/send-reports'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ai-tutanak'
+    | '/kagit'
+    | '/menu'
+    | '/takrir'
+    | '/yoklama'
+    | '/talebe/$name'
+    | '/api/public/jobs/send-reports'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai-tutanak'
+    | '/kagit'
+    | '/menu'
+    | '/takrir'
+    | '/yoklama'
+    | '/talebe/$name'
+    | '/api/public/jobs/send-reports'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiTutanakRoute: typeof AiTutanakRoute
+  KagitRoute: typeof KagitRoute
+  MenuRoute: typeof MenuRoute
+  TakrirRoute: typeof TakrirRoute
+  YoklamaRoute: typeof YoklamaRoute
+  TalebeNameRoute: typeof TalebeNameRoute
+  ApiPublicJobsSendReportsRoute: typeof ApiPublicJobsSendReportsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +144,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-tutanak': {
+      id: '/ai-tutanak'
+      path: '/ai-tutanak'
+      fullPath: '/ai-tutanak'
+      preLoaderRoute: typeof AiTutanakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kagit': {
+      id: '/kagit'
+      path: '/kagit'
+      fullPath: '/kagit'
+      preLoaderRoute: typeof KagitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/menu': {
+      id: '/menu'
+      path: '/menu'
+      fullPath: '/menu'
+      preLoaderRoute: typeof MenuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/takrir': {
+      id: '/takrir'
+      path: '/takrir'
+      fullPath: '/takrir'
+      preLoaderRoute: typeof TakrirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/yoklama': {
+      id: '/yoklama'
+      path: '/yoklama'
+      fullPath: '/yoklama'
+      preLoaderRoute: typeof YoklamaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/talebe/$name': {
+      id: '/talebe/$name'
+      path: '/talebe/$name'
+      fullPath: '/talebe/$name'
+      preLoaderRoute: typeof TalebeNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/jobs/send-reports': {
+      id: '/api/public/jobs/send-reports'
+      path: '/api/public/jobs/send-reports'
+      fullPath: '/api/public/jobs/send-reports'
+      preLoaderRoute: typeof ApiPublicJobsSendReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiTutanakRoute: AiTutanakRoute,
+  KagitRoute: KagitRoute,
+  MenuRoute: MenuRoute,
+  TakrirRoute: TakrirRoute,
+  YoklamaRoute: YoklamaRoute,
+  TalebeNameRoute: TalebeNameRoute,
+  ApiPublicJobsSendReportsRoute: ApiPublicJobsSendReportsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
