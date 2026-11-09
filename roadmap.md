@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Move only shared-data sync to the external data client, verify version checks, merges, saves and broadcasts; preserve all other services.
 - [ ] Store all app records securely in Lovable Cloud and preserve existing device records; waiting for the user's decision on personal versus shared teacher access.
 - [x] Consolidate Takrir inside its page with previous-day navigation and a single shared PDF/print area; verify saved records and exports.
 - [ ] Add saved teacher notes and AI development summaries using student takrir history; verify generation and persistence.
