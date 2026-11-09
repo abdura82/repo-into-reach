@@ -103,14 +103,23 @@ export function CloudSyncProvider({ children }: { children: ReactNode }) {
       .on("broadcast", { event: "changed" }, () => void pull())
       .subscribe();
     channel.current = ch;
-    const id = setInterval(() => void pull(), 5000);
+    const visible = () => document.visibilityState === "visible";
+    // Periodic check is a fallback only: once a minute, and only while the page is shown.
+    const id = setInterval(() => {
+      if (visible()) void pull();
+    }, 60000);
     const onFocus = () => void pull();
+    const onVisibility = () => {
+      if (visible()) void pull();
+    };
     window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibility);
     return () => {
       clearInterval(id);
       channel.current = null;
       void supabase.removeChannel(ch);
       window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [ready, pull]);
 
