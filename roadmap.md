@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Restore İbtidai/İhzari header switching and the four requested student group choices; verify group isolation and forms.
 - [x] Move only shared-data sync to the external data client; 116 tests pass, build OK, live external reads and focus version checks verified; saves and broadcasts regression-tested without changing live records.
 - [ ] Store all app records securely in Lovable Cloud and preserve existing device records; waiting for the user's decision on personal versus shared teacher access.
 - [x] Consolidate Takrir inside its page with previous-day navigation and a single shared PDF/print area; verify saved records and exports.

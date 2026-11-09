@@ -1,16 +1,17 @@
 import { localIso } from "@/lib/utils";
 import { useState } from "react";
 import type { Student } from "@/lib/store";
+import { normalizeStudentGroup, STUDENT_GROUPS } from "@/lib/groups";
 import { Field, inputCls, primaryBtn } from "./Sheet";
 
 export type StudentInput = Omit<Student, "id">;
 
 export const emptyStudent: StudentInput = {
-  name: "", age: "", group: "Daimi Grup", city: "", startDate: localIso(), guardian: "", phone: "", talebePhone: "", status: "İyi",
+  name: "", age: "", group: STUDENT_GROUPS[0], city: "", startDate: localIso(), guardian: "", phone: "", talebePhone: "", status: "İyi",
 };
 
 export function StudentForm({ initial, onSubmit }: { initial: StudentInput; onSubmit: (s: StudentInput) => void }) {
-  const [f, setF] = useState(initial);
+  const [f, setF] = useState(() => ({ ...initial, group: normalizeStudentGroup(initial.group) }));
   const set = (k: keyof StudentInput) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
   return (
     <form onSubmit={(e) => { e.preventDefault(); if (f.name.trim()) onSubmit({ ...f, name: f.name.trim() }); }}>
@@ -19,7 +20,7 @@ export function StudentForm({ initial, onSubmit }: { initial: StudentInput; onSu
         <Field label="Yaş"><input className={inputCls} inputMode="numeric" value={f.age} onChange={set("age")} /></Field>
         <Field label="Grup">
           <select className={inputCls} value={f.group} onChange={set("group")}>
-            <option>Daimi Grup</option><option>Hafızlık</option><option>Yaz Kursu</option><option>Hafta Sonu</option>
+            {STUDENT_GROUPS.map((label) => <option key={label}>{label}</option>)}
           </select>
         </Field>
         <Field label="Şehir"><input className={inputCls} value={f.city} onChange={set("city")} /></Field>
