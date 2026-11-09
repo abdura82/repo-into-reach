@@ -16,7 +16,7 @@ export type Student = {
   /** The student's own phone; optional so old records stay valid. */
   talebePhone?: string | undefined;
   status: "İyi" | "Orta";
-  /** Class the student belongs to; missing on old records = İbtidai. */
+  /** Class the student belongs to; unclassified old records stay in İhzari. */
   sinif?: GroupId | undefined;
   developmentNotes?: string;
   developmentSummary?: DevelopmentSummary & { createdAt: string; notes: string; history: string };

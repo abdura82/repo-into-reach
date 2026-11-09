@@ -1,19 +1,25 @@
 import type { State, Student } from "./store";
 
-/** The app has a single class (İhzari); İbtidai was removed. */
-export type GroupId = "ihzari";
+export type GroupId = "ihzari" | "ibtidai";
 
-export const GROUPS: { id: GroupId; label: string }[] = [{ id: "ihzari", label: "İhzari" }];
+export const GROUPS: { id: GroupId; label: string }[] = [
+  { id: "ibtidai", label: "İbtidai" },
+  { id: "ihzari", label: "İhzari" },
+];
 
-export const groupLabel = (g: GroupId) => GROUPS.find((x) => x.id === g)!.label;
+export const STUDENT_GROUPS = ["Hazırlık", "İbtidai 1", "İbtidai 2", "İhzari"] as const;
+export const normalizeStudentGroup = (value: string) =>
+  STUDENT_GROUPS.find((label) => label === value) ?? STUDENT_GROUPS[0];
+
+export const groupLabel = (g: GroupId) => GROUPS.find((x) => x.id === g)?.label ?? "İhzari";
 
 /** Top line of every downloaded çizelge (PDF, Excel and blank paper). */
 export const chartHeading = (g: GroupId) => `HARAR 5 ${groupLabel(g).toLocaleUpperCase("tr")} GRUP YOKLAMA TAKİP ÇİZELGESİ`;
 
-/** Every student (including old İbtidai or group-less records) belongs to İhzari. */
-export const groupOf = (_s: Pick<Student, "sinif">): GroupId => "ihzari";
+/** Preserve unclassified records in the previously active İhzari class. */
+export const groupOf = (s: Pick<Student, "sinif">): GroupId => s.sinif === "ibtidai" ? "ibtidai" : "ihzari";
 
-export const isGroupId = (v: unknown): v is GroupId => v === "ihzari";
+export const isGroupId = (v: unknown): v is GroupId => v === "ihzari" || v === "ibtidai";
 
 /** One group's students plus only the attendance and tutanak rows of those students. */
 export function sliceGroup(state: State, g: GroupId): State {

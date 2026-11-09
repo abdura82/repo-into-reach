@@ -1,6 +1,9 @@
 import { LiquidTabBar } from "./LiquidTabBar";
 import { BookOpen, Users, CalendarCheck, FileText, Menu } from "./icons";
 import type { ReactNode } from "react";
+import { useStore } from "@/lib/store";
+import { GROUPS } from "@/lib/groups";
+import { Button } from "@/components/ui/button";
 
 const tabs = [
   { to: "/", label: "Talebeler", icon: Users },
@@ -23,6 +26,7 @@ function Mosque() {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const { group, setGroup } = useStore();
   return (
     <div className="mx-auto min-h-screen max-w-md bg-background pb-32 font-sans text-foreground">
       <div className="fixed inset-x-0 top-0 z-30 mx-auto max-w-md">
@@ -30,14 +34,22 @@ export function AppShell({ children }: { children: ReactNode }) {
         <header className="relative overflow-hidden rounded-b-[2rem] bg-primary px-4 pb-4 pt-4 shadow-md">
           <Mosque />
           <div className="relative flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-card text-primary">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-card text-primary">
               <BookOpen className="h-4 w-4" />
             </div>
-            <div className="leading-none">
+            <div className="min-w-0 leading-none">
               <h1 className="font-serif text-2xl font-bold leading-none tracking-[0.12em] text-primary-foreground">SİEC</h1>
-              <p className="mt-1 text-[11px] font-medium tracking-wide text-primary-foreground/75">Talebe Takip Paneli</p>
+              <p className="mt-1 text-[11px] font-medium text-primary-foreground/75">Talebe Takip Paneli</p>
             </div>
-
+            <div role="group" aria-label="Sınıf seçimi" className="ml-auto flex shrink-0 gap-1 rounded-lg bg-primary-foreground/10 p-1">
+              {GROUPS.map((item) => (
+                <Button key={item.id} variant="ghost" size="sm" aria-pressed={group === item.id}
+                  onClick={() => setGroup(item.id)}
+                  className={`h-8 px-2 text-[11px] ${group === item.id ? "class-switch-active bg-card text-primary hover:bg-card hover:text-primary" : "text-primary-foreground/75 hover:bg-primary-foreground/10 hover:text-primary-foreground"}`}>
+                  {item.label}
+                </Button>
+              ))}
+            </div>
           </div>
         </header>
       </div>
